@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="drawVisualization()">클릭</button>
+    </div>
+    <div id="chart_div" style="width: 1500px; height: 500px"></div>
+    <script>
+        google.charts.load("current", { "packages": ["corechart"] });
+
+        new Vue({
+            el: "#app",
+            data: {
+                rowData: [
+                    ["Year", "서울시 평균 초혼 연령", "20 - 24세", "25 - 29세", "30 - 34세", "35 - 39세", "총합"]
+                ]
+            },
+            mounted() {
+                axios
+                    .get("http://localhost/step02_marryMe/marriage.jsp")
+                    .then(response => {
+                        let data = response.data;
+                        let year, male, female, avg;
+
+                        data.shift();
+                        data.forEach(element => {
+                            element = Object.values(element);
+
+                            year = element[0].toString();
+                            female = element[2];
+                            male = element[3];
+                            avg = (male + female) / 2;
+
+                            this.rowData.push([year, avg]);
+                        });
+                    }).catch(error => {
+                        console.log('then error : ', error)
+                    }),
+                axios
+                    .get("http://localhost/step02_marryMe/job.jsp")
+                    .then(response => {
+                        let data = response.data
+                        let total, earTwo, lateTwo, earThree, lateThree, all;
+
+                        data.shift(); data.shift();
+
+                        data.forEach((element, index) => {
+                            element = Object.values(element);
+                            total = Number(element[2]);
+                            earTwo = this.numberLeng(element[8] / total);
+                            lateTwo = this.numberLeng(element[11] / total);
+                            earThree = this.numberLeng(element[14] / total);
+                            lateThree = this.numberLeng(element[17] / total);
+                            all = (earTwo + lateTwo + earThree + lateThree);
+                            this.rowData[index + 1].push(earTwo, lateTwo, earThree, lateThree, all);
+                        })
+                    }).catch(error => {
+                        console.log('then error : ', error)
+                    })
+            },
+            methods: {
+                drawVisualization: function () {
+                    // Some raw data (not necessarily accurate)
+                    var data = google.visualization.arrayToDataTable(this.rowData);
+
+                    var options = {
+                        title: "20-30대 취업 비율 추이와 초혼 연령간의 상관 관계",
+                        vAxes: { 0: { title: "나이", format: "##" }, 1: { title: "서울시 연령대 별 취업 비율", format: "#%" } },
+                        hAxis: { title: "연도" },
+                        series: {
+                            0: { type: "line", targetAxisIndex: 0 },
+                            1: { type: "bars", targetAxisIndex: 1 },
+                            2: { type: "bars", targetAxisIndex: 1 },
+                            3: { type: "bars", targetAxisIndex: 1 },
+                            4: { type: "bars", targetAxisIndex: 1 },
+                            5: { type: "bars", targetAxisIndex: 1 }
+                        }
+                    }
+
+                    var chart = new google.visualization.ComboChart(document.getElementById("chart_div"));
+                    chart.draw(data, options);
+                },
+                numberLeng: number => { return number = Number(number.toFixed(3), 4); }
+            }
+        })
+
+    </script>
+</body>
+
+</html>
+
+<!-- 
+결론
+
+우선 초혼 평균 연령은 2000년도부터 현재까지 지속적으로 증가한 것이 확연하고,
+20~24 부터 35~39세 까지의 취업 비율은 모두 대체적으로 감소한 것으로 보인다.
+하지만 처음 예상한 결론이었던 결혼 적령대의 취업 비율이 낮아짐에 따라, 즉 결혼 적령대 사람들이 취업을 못함에 따라 초혼 평균 연령이
+증가한 것으로 보기에는 다소 근거가 부족해 보인다. => 신빙성이 있어 보인다.
+!-->
+<!--
+만약 추가로 조사를 더 진행해 본다면, 물가 상승률, 수도권 집가 상승률, 평균 임금 상승률을 비교하여,
+임금 상승률이 물가 및 집가 상승률에 미치지 못하여 충분한 결혼 자금을 모으지 못해 초혼 평균 연령이 증가한 것이 아닌지 조사를 진행해보고 싶다.
+
++@
+1. 데이터 2가지 제시
+2. Google Chart : Comno Chart 활용 -> 추가 축 설정 가능
+3. Vue + axois 비동기 한번에 실행
+4. Google Chart에서 원하는 형태로 데이터를 넣어줬어야 했음.
+   [                 [
+    [A, B]   =>       [A, B, C, D]
+   ]                 ]
+5. shift를 사용해서 의미 없는 콜럼 데이터를 제거하고 forEach문을 활용하여 데이터를 rawArry에 삽입하였다.
+6. 그 과정에서 각 연령별 취업 자 수를 총 취업자 수(total)로 나눠줬는데 소수점 자릿수가 너무 길게 나와서 소수점 2자리로 변형하는 과정에서,
+    toFixed라는 함수는 2자리까지 잘 편집해주지만 변수를 string타입으로 반환해서 이를 다시 number로 변형해줘야 했는데, 기본 제공 함수 중에
+    이에 부합하는 함수가 없어 직접 함수를 선언하여 활용하였다.
+6. 이렇게 2가지 데이터를 보두 배열에 넣은 뒤 올바르게 시각적으로 표현하기 위해 차트에 2번째 vAxis를 추가하였다.
+-->

@@ -18,6 +18,9 @@ Web : jsp | Vue | axios
 ```
 출처 : [서울열린데이터광장](http://data.seoul.go.kr), Source : [SeoulOpenDataPlaza](http://data.seoul.go.kr)
 
+## Example
+![Alt text](C:\Users\Playdata\Desktop\chart.jpg)
+
 ## Author
 
 👤 **DongSeong Kim **

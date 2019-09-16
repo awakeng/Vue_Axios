@@ -5,7 +5,9 @@
 ## Skill sets
 
 ```sh
-java script | jsp | html | Vue | axios | Google Chart
+Language : HTML5 | JavaScript
+Web : jsp | Vue | axios
+  + Google Chart
 ```
 
 ## Data sets

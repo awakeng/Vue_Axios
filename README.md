@@ -2,16 +2,18 @@
 
 > brief visual analysis using Google chart about correlation between average age of first marriage and age-specific employment rate of Seoul citizens
 
-## Install
+## Skill sets
 
 ```sh
-npm install
+java script | jsp | html | Vue | axios | Google Chart
 ```
 
-## Run tests
+## Data sets
 
 ```sh
-npm run test
+[Employment statistics by age](http://data.seoul.go.kr/dataList/datasetView.do?infId=3&srvType=S&serviceKind=2)
+[Average age of first marriage](http://data.seoul.go.kr/dataList/datasetView.do?infId=10087&srvType=S&serviceKind=2)
+[출처 : 서울열린데이터광장, Source : SeoulOpenDataPlaza](http://data.seoul.go.kr)
 ```
 
 ## Author

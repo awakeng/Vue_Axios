@@ -19,7 +19,7 @@ Web : jsp | Vue | axios
 출처 : [서울열린데이터광장](http://data.seoul.go.kr), Source : [SeoulOpenDataPlaza](http://data.seoul.go.kr)
 
 ## Example
-![Alt text](/path/to/chart.jpg)
+![Alt text](relative/path/to/chart.jpg?raw=true "Title")
 
 ## Author
 

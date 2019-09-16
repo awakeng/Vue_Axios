@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to  marry me 👋</h1>
 
-> brief visual analysis using Google chart about correlation between average age of first marriage and age-specific employment rate of Seoul citizens
+> Brief visual analysis using Google chart about correlation between average age of first marriage and age-specific employment rate of Seoul citizens
 
 ## Skill sets
 
@@ -22,6 +22,6 @@ Web : jsp | Vue | axios
 ![img](https://user-images.githubusercontent.com/44081090/64932690-aefe7700-d87b-11e9-93b9-95fdd8383c0e.jpg)
 ## Author
 
-👤 **DongSeong Kim **
+>👤 **DongSeong Kim **
 
-* Github: [@awakeng](https://github.com/awakeng)
+>* Github: [@awakeng](https://github.com/awakeng)
